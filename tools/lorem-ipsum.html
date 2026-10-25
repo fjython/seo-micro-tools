@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Lorem Ipsum Generator — Free Placeholder Text Online</title>
+  <meta name="description" content="Free Lorem Ipsum generator. Create placeholder paragraphs for mockups, wireframes, and design drafts in your browser.">
+  <link rel="stylesheet" href="../assets/style.css">
+  <script type="application/ld+json">
+  {"@context":"https://schema.org","@type":"FAQPage","mainEntity":[
+    {"@type":"Question","name":"What is Lorem Ipsum?","acceptedAnswer":{"@type":"Answer","text":"Lorem Ipsum is standard placeholder text used in design and publishing to fill layouts before real copy is ready."}},
+    {"@type":"Question","name":"Can I choose how many paragraphs?","acceptedAnswer":{"@type":"Answer","text":"Yes. Choose 1 to 20 paragraphs and generate instantly."}},
+    {"@type":"Question","name":"Does generation need a server?","acceptedAnswer":{"@type":"Answer","text":"No. Text is assembled locally in your browser."}}
+  ]}
+  </script>
+</head>
+<body>
+  <header class="site-header"><div class="inner"><a class="logo" href="../index.html">Micro<span>Tools</span></a><a class="nav-home" href="../index.html">All tools</a></div></header>
+  <main>
+    <nav class="breadcrumb"><a href="../index.html">Home</a> / Lorem Ipsum Generator</nav>
+    <h1>Lorem Ipsum Generator</h1>
+    <p class="lead">Generate classic placeholder paragraphs for layouts and mockups.</p>
+    <div class="ad-slot" aria-hidden="true">Advertisement placeholder</div>
+    <div class="panel">
+      <label for="count">Paragraphs (1–20)</label>
+      <input type="number" id="count" min="1" max="20" value="3" style="max-width:120px">
+      <div class="row">
+        <button type="button" class="btn" id="gen">Generate</button>
+        <button type="button" class="btn-secondary btn" id="copy">Copy</button>
+        <span class="toast" id="toast"></span>
+      </div>
+      <label>Output</label>
+      <div class="output-box" id="out" style="min-height:10rem;white-space:pre-wrap;word-break:normal"></div>
+    </div>
+    <section class="faq">
+      <h2>FAQ</h2>
+      <details open><summary>What is Lorem Ipsum?</summary><p>Lorem Ipsum is standard placeholder text used in design and publishing to fill layouts before real copy is ready.</p></details>
+      <details><summary>Can I choose how many paragraphs?</summary><p>Yes. Choose 1 to 20 paragraphs and generate instantly.</p></details>
+      <details><summary>Does generation need a server?</summary><p>No. Text is assembled locally in your browser.</p></details>
+    </section>
+  </main>
+  <footer class="site-footer"><div class="inner"><div class="ad-slot" aria-hidden="true">Footer ad placeholder</div><p>© <span class="y"></span> MicroTools</p></div></footer>
+  <script>
+  document.querySelectorAll('.y').forEach(el => el.textContent = new Date().getFullYear());
+  const WORDS = 'lorem ipsum dolor sit amet consectetur adipiscing elit sed do eiusmod tempor incididunt ut labore et dolore magna aliqua ut enim ad minim veniam quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur excepteur sint occaecat cupidatat non proident sunt in culpa qui officia deserunt mollit anim id est laborum'.split(' ');
+  const out = document.getElementById('out');
+  const toast = document.getElementById('toast');
+  function sentence() {
+    const len = 8 + Math.floor(Math.random() * 12);
+    const s = [];
+    for (let i = 0; i < len; i++) s.push(WORDS[Math.floor(Math.random() * WORDS.length)]);
+    s[0] = s[0].charAt(0).toUpperCase() + s[0].slice(1);
+    return s.join(' ') + '.';
+  }
+  function paragraph() {
+    const n = 3 + Math.floor(Math.random() * 4);
+    return Array.from({length: n}, sentence).join(' ');
+  }
+  function generate() {
+    let n = parseInt(document.getElementById('count').value, 10) || 1;
+    n = Math.min(20, Math.max(1, n));
+    const paras = Array.from({length: n}, (_, i) => i === 0
+      ? 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. ' + Array.from({length: 2 + Math.floor(Math.random()*3)}, sentence).join(' ')
+      : paragraph());
+    out.textContent = paras.join('\n\n');
+  }
+  document.getElementById('gen').onclick = generate;
+  document.getElementById('copy').onclick = async () => { await navigator.clipboard.writeText(out.textContent); toast.textContent = 'Copied!'; setTimeout(() => toast.textContent = '', 1500); };
+  generate();
+  </script>
+</body>
+</html>

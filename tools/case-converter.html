@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Case Converter — Upper, Lower, Title, Camel & Snake Case</title>
+  <meta name="description" content="Free online case converter. Convert text to uppercase, lowercase, title case, camelCase, snake_case, and kebab-case in your browser.">
+  <link rel="stylesheet" href="../assets/style.css">
+  <script type="application/ld+json">
+  {"@context":"https://schema.org","@type":"FAQPage","mainEntity":[
+    {"@type":"Question","name":"What case formats are supported?","acceptedAnswer":{"@type":"Answer","text":"Uppercase, lowercase, title case, sentence case, camelCase, PascalCase, snake_case, and kebab-case."}},
+    {"@type":"Question","name":"Is text sent to a server?","acceptedAnswer":{"@type":"Answer","text":"No. Conversion runs in your browser with JavaScript."}},
+    {"@type":"Question","name":"Can I convert code identifiers?","acceptedAnswer":{"@type":"Answer","text":"Yes. Use camel, Pascal, snake, or kebab modes for variable and CSS naming."}}
+  ]}
+  </script>
+</head>
+<body>
+  <header class="site-header"><div class="inner"><a class="logo" href="../index.html">Micro<span>Tools</span></a><a class="nav-home" href="../index.html">All tools</a></div></header>
+  <main>
+    <nav class="breadcrumb"><a href="../index.html">Home</a> / Case Converter</nav>
+    <h1>Case Converter</h1>
+    <p class="lead">Convert text between common casing styles for writing and code.</p>
+    <div class="ad-slot" aria-hidden="true">Advertisement placeholder</div>
+    <div class="panel">
+      <label for="input">Text</label>
+      <textarea id="input" placeholder="Type or paste text…"></textarea>
+      <div class="row">
+        <button type="button" class="btn" data-case="upper">UPPER</button>
+        <button type="button" class="btn-secondary btn" data-case="lower">lower</button>
+        <button type="button" class="btn-secondary btn" data-case="title">Title Case</button>
+        <button type="button" class="btn-secondary btn" data-case="sentence">Sentence</button>
+        <button type="button" class="btn-secondary btn" data-case="camel">camelCase</button>
+        <button type="button" class="btn-secondary btn" data-case="pascal">PascalCase</button>
+        <button type="button" class="btn-secondary btn" data-case="snake">snake_case</button>
+        <button type="button" class="btn-secondary btn" data-case="kebab">kebab-case</button>
+        <button type="button" class="btn-secondary btn" id="copy">Copy</button>
+        <span class="toast" id="toast"></span>
+      </div>
+    </div>
+    <section class="faq">
+      <h2>FAQ</h2>
+      <details open><summary>What case formats are supported?</summary><p>Uppercase, lowercase, title case, sentence case, camelCase, PascalCase, snake_case, and kebab-case.</p></details>
+      <details><summary>Is text sent to a server?</summary><p>No. Conversion runs in your browser with JavaScript.</p></details>
+      <details><summary>Can I convert code identifiers?</summary><p>Yes. Use camel, Pascal, snake, or kebab modes for variable and CSS naming.</p></details>
+    </section>
+  </main>
+  <footer class="site-footer"><div class="inner"><div class="ad-slot" aria-hidden="true">Footer ad placeholder</div><p>© <span class="y"></span> MicroTools</p></div></footer>
+  <script>
+  document.querySelectorAll('.y').forEach(el => el.textContent = new Date().getFullYear());
+  const input = document.getElementById('input');
+  const toast = document.getElementById('toast');
+  function words(s) {
+    return s.replace(/([a-z])([A-Z])/g, '$1 $2').replace(/[_\-]+/g, ' ').trim().split(/\s+/).filter(Boolean);
+  }
+  const fns = {
+    upper: s => s.toUpperCase(),
+    lower: s => s.toLowerCase(),
+    title: s => words(s).map(w => w.charAt(0).toUpperCase() + w.slice(1).toLowerCase()).join(' '),
+    sentence: s => { const t = s.toLowerCase(); return t ? t.charAt(0).toUpperCase() + t.slice(1) : ''; },
+    camel: s => { const w = words(s).map(x => x.toLowerCase()); return w.length ? w[0] + w.slice(1).map(x => x.charAt(0).toUpperCase() + x.slice(1)).join('') : ''; },
+    pascal: s => words(s).map(x => x.charAt(0).toUpperCase() + x.slice(1).toLowerCase()).join(''),
+    snake: s => words(s).map(x => x.toLowerCase()).join('_'),
+    kebab: s => words(s).map(x => x.toLowerCase()).join('-')
+  };
+  document.querySelectorAll('[data-case]').forEach(btn => {
+    btn.onclick = () => { input.value = fns[btn.dataset.case](input.value); };
+  });
+  document.getElementById('copy').onclick = async () => { await navigator.clipboard.writeText(input.value); toast.textContent = 'Copied!'; setTimeout(() => toast.textContent = '', 1500); };
+  </script>
+</body>
+</html>

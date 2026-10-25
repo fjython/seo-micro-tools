@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Unix Timestamp Converter — Epoch to Date Online</title>
+  <meta name="description" content="Free Unix timestamp converter. Convert epoch seconds or milliseconds to human-readable dates and back in your browser.">
+  <link rel="stylesheet" href="../assets/style.css">
+  <script type="application/ld+json">
+  {"@context":"https://schema.org","@type":"FAQPage","mainEntity":[
+    {"@type":"Question","name":"What is a Unix timestamp?","acceptedAnswer":{"@type":"Answer","text":"A Unix timestamp is the number of seconds (or milliseconds) since 1970-01-01 00:00:00 UTC."}},
+    {"@type":"Question","name":"Seconds or milliseconds?","acceptedAnswer":{"@type":"Answer","text":"Both are supported. Values with 13+ digits are treated as milliseconds; shorter ones as seconds."}},
+    {"@type":"Question","name":"Is conversion private?","acceptedAnswer":{"@type":"Answer","text":"Yes. Everything runs in your browser with no server upload."}}
+  ]}
+  </script>
+</head>
+<body>
+  <header class="site-header"><div class="inner"><a class="logo" href="../index.html">Micro<span>Tools</span></a><a class="nav-home" href="../index.html">All tools</a></div></header>
+  <main>
+    <nav class="breadcrumb"><a href="../index.html">Home</a> / Unix Timestamp Converter</nav>
+    <h1>Unix Timestamp Converter</h1>
+    <p class="lead">Convert between Unix epoch timestamps and human-readable dates.</p>
+    <div class="ad-slot" aria-hidden="true">Advertisement placeholder</div>
+    <div class="panel">
+      <div class="two-col">
+        <div>
+          <label for="ts">Unix timestamp</label>
+          <input type="text" id="ts" placeholder="e.g. 1700000000">
+          <div class="row">
+            <button type="button" class="btn" id="toDate">To date</button>
+            <button type="button" class="btn-secondary btn" id="nowTs">Now</button>
+          </div>
+        </div>
+        <div>
+          <label for="dt">Date & time (local)</label>
+          <input type="datetime-local" id="dt" step="1">
+          <div class="row">
+            <button type="button" class="btn" id="toTs">To timestamp</button>
+          </div>
+        </div>
+      </div>
+      <label style="margin-top:1rem">Result</label>
+      <div class="output-box" id="out">—</div>
+    </div>
+    <section class="faq">
+      <h2>FAQ</h2>
+      <details open><summary>What is a Unix timestamp?</summary><p>A Unix timestamp is the number of seconds (or milliseconds) since 1970-01-01 00:00:00 UTC.</p></details>
+      <details><summary>Seconds or milliseconds?</summary><p>Both are supported. Values with 13+ digits are treated as milliseconds; shorter ones as seconds.</p></details>
+      <details><summary>Is conversion private?</summary><p>Yes. Everything runs in your browser with no server upload.</p></details>
+    </section>
+  </main>
+  <footer class="site-footer"><div class="inner"><div class="ad-slot" aria-hidden="true">Footer ad placeholder</div><p>© <span class="y"></span> MicroTools</p></div></footer>
+  <script>
+  document.querySelectorAll('.y').forEach(el => el.textContent = new Date().getFullYear());
+  const ts = document.getElementById('ts');
+  const dt = document.getElementById('dt');
+  const out = document.getElementById('out');
+  function pad(n){ return String(n).padStart(2,'0'); }
+  function fillLocal(d) {
+    dt.value = `${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}T${pad(d.getHours())}:${pad(d.getMinutes())}:${pad(d.getSeconds())}`;
+  }
+  document.getElementById('nowTs').onclick = () => {
+    const d = new Date();
+    ts.value = String(Math.floor(d.getTime()/1000));
+    fillLocal(d);
+    out.textContent = 'Seconds: ' + Math.floor(d.getTime()/1000) + '\nMilliseconds: ' + d.getTime() + '\nUTC: ' + d.toUTCString() + '\nLocal: ' + d.toString() + '\nISO: ' + d.toISOString();
+  };
+  document.getElementById('toDate').onclick = () => {
+    let n = Number(String(ts.value).trim());
+    if (!Number.isFinite(n)) { out.textContent = 'Enter a numeric timestamp.'; return; }
+    if (String(Math.trunc(Math.abs(n))).length >= 13) { /* ms */ }
+    else n = n * 1000;
+    const d = new Date(n);
+    if (isNaN(d.getTime())) { out.textContent = 'Invalid timestamp.'; return; }
+    fillLocal(d);
+    out.textContent = 'UTC: ' + d.toUTCString() + '\nLocal: ' + d.toString() + '\nISO: ' + d.toISOString() + '\nSeconds: ' + Math.floor(d.getTime()/1000) + '\nMilliseconds: ' + d.getTime();
+  };
+  document.getElementById('toTs').onclick = () => {
+    if (!dt.value) { out.textContent = 'Pick a date and time.'; return; }
+    const d = new Date(dt.value);
+    if (isNaN(d.getTime())) { out.textContent = 'Invalid date.'; return; }
+    ts.value = String(Math.floor(d.getTime()/1000));
+    out.textContent = 'Seconds: ' + Math.floor(d.getTime()/1000) + '\nMilliseconds: ' + d.getTime() + '\nUTC: ' + d.toUTCString() + '\nLocal: ' + d.toString() + '\nISO: ' + d.toISOString();
+  };
+  document.getElementById('nowTs').click();
+  </script>
+</body>
+</html>

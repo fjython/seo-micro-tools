@@ -1,0 +1,26 @@
+{
+  "version": 1,
+  "notes": "Ideas beyond the first 10 shipped tools. Each day pick the first status=todo item, build a one-page client-side tool, mark done, and update the index hub.",
+  "items": [
+    {"id": 11, "slug": "password-generator", "title": "Password Generator", "keyword": "free password generator online", "status": "todo", "blurb": "Generate random passwords with length and character-set options."},
+    {"id": 12, "slug": "hash-generator", "title": "SHA-256 / MD5 Hash Generator", "keyword": "sha256 hash generator online", "status": "todo", "blurb": "Hash text with Web Crypto (SHA-256) and a simple MD5 fallback note."},
+    {"id": 13, "slug": "url-encoder", "title": "URL Encode / Decode", "keyword": "url encode decode online", "status": "todo", "blurb": "encodeURIComponent and decode for query strings."},
+    {"id": 14, "slug": "html-entity", "title": "HTML Entity Encoder", "keyword": "html entity encoder online", "status": "todo", "blurb": "Escape and unescape HTML entities in text."},
+    {"id": 15, "slug": "markdown-preview", "title": "Markdown to HTML Preview", "keyword": "markdown to html preview online", "status": "todo", "blurb": "Lightweight markdown subset renderer in the browser."},
+    {"id": 16, "slug": "color-converter", "title": "HEX / RGB / HSL Color Converter", "keyword": "hex to rgb converter online", "status": "todo", "blurb": "Convert between HEX, RGB, and HSL with a color swatch."},
+    {"id": 17, "slug": "unit-converter", "title": "Length Unit Converter", "keyword": "cm to inches converter online", "status": "todo", "blurb": "Convert cm, inches, feet, meters, and miles."},
+    {"id": 18, "slug": "percentage-calculator", "title": "Percentage Calculator", "keyword": "percentage calculator online", "status": "todo", "blurb": "What is X% of Y, percent change, and reverse percentage."},
+    {"id": 19, "slug": "reading-time", "title": "Reading Time Calculator", "keyword": "reading time calculator online", "status": "todo", "blurb": "Estimate reading time from word count at adjustable WPM."},
+    {"id": 20, "slug": "diff-checker", "title": "Text Diff Checker", "keyword": "text diff checker online", "status": "todo", "blurb": "Side-by-side line diff for two text blocks."},
+    {"id": 21, "slug": "csv-to-json", "title": "CSV to JSON Converter", "keyword": "csv to json converter online", "status": "todo", "blurb": "Parse CSV in-browser and output JSON array."},
+    {"id": 22, "slug": "json-to-csv", "title": "JSON to CSV Converter", "keyword": "json to csv converter online", "status": "todo", "blurb": "Flatten a JSON array of objects into CSV."},
+    {"id": 23, "slug": "regex-tester", "title": "Regex Tester", "keyword": "regex tester online", "status": "todo", "blurb": "Test JavaScript regex with match highlighting."},
+    {"id": 24, "slug": "cron-explainer", "title": "Cron Expression Explainer", "keyword": "cron expression explainer online", "status": "todo", "blurb": "Human-readable description of a 5-field cron string."},
+    {"id": 25, "slug": "qr-code", "title": "QR Code Generator", "keyword": "qr code generator online free", "status": "todo", "blurb": "Generate QR codes client-side (embed a tiny QR lib or canvas)."},
+    {"id": 26, "slug": "meta-tag-preview", "title": "Meta Tag Preview", "keyword": "open graph meta tag preview", "status": "todo", "blurb": "Preview title/description length for SERP and social cards."},
+    {"id": 27, "slug": "robots-txt-tester", "title": "Robots.txt Tester", "keyword": "robots.txt tester online", "status": "todo", "blurb": "Check if a path would be allowed by pasted robots.txt rules."},
+    {"id": 28, "slug": "jwt-decoder", "title": "JWT Decoder", "keyword": "jwt decoder online", "status": "todo", "blurb": "Decode JWT header and payload (no signature verification)."},
+    {"id": 29, "slug": "number-to-words", "title": "Number to Words", "keyword": "number to words converter online", "status": "todo", "blurb": "Convert integers to English words."},
+    {"id": 30, "slug": "ascii-art", "title": "Text to ASCII Banner", "keyword": "ascii art generator online", "status": "todo", "blurb": "Simple FIGlet-style uppercase banner from text."}
+  ]
+}

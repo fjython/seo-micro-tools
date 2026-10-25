@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Whitespace Remover — Trim & Collapse Extra Spaces Online</title>
+  <meta name="description" content="Free online whitespace remover. Trim edges, collapse multiple spaces, remove blank lines, or strip all whitespace in your browser.">
+  <link rel="stylesheet" href="../assets/style.css">
+  <script type="application/ld+json">
+  {"@context":"https://schema.org","@type":"FAQPage","mainEntity":[
+    {"@type":"Question","name":"What can this tool remove?","acceptedAnswer":{"@type":"Answer","text":"Leading/trailing spaces, repeated spaces, blank lines, tabs, or all whitespace characters."}},
+    {"@type":"Question","name":"Will it change my line breaks?","acceptedAnswer":{"@type":"Answer","text":"Trim and collapse modes keep line structure. Remove blank lines and strip-all modes change newlines as described on each button."}},
+    {"@type":"Question","name":"Is text uploaded?","acceptedAnswer":{"@type":"Answer","text":"No. Cleaning runs locally in your browser."}}
+  ]}
+  </script>
+</head>
+<body>
+  <header class="site-header"><div class="inner"><a class="logo" href="../index.html">Micro<span>Tools</span></a><a class="nav-home" href="../index.html">All tools</a></div></header>
+  <main>
+    <nav class="breadcrumb"><a href="../index.html">Home</a> / Whitespace Remover</nav>
+    <h1>Whitespace Remover</h1>
+    <p class="lead">Trim, collapse, or strip extra spaces and blank lines from text.</p>
+    <div class="ad-slot" aria-hidden="true">Advertisement placeholder</div>
+    <div class="panel">
+      <label for="input">Text</label>
+      <textarea id="input" placeholder="Paste messy text here…"></textarea>
+      <div class="row">
+        <button type="button" class="btn" id="trim">Trim edges</button>
+        <button type="button" class="btn-secondary btn" id="collapse">Collapse spaces</button>
+        <button type="button" class="btn-secondary btn" id="blank">Remove blank lines</button>
+        <button type="button" class="btn-secondary btn" id="tabs">Tabs → spaces</button>
+        <button type="button" class="btn-secondary btn" id="strip">Strip all whitespace</button>
+        <button type="button" class="btn-secondary btn" id="copy">Copy</button>
+        <span class="toast" id="toast"></span>
+      </div>
+    </div>
+    <section class="faq">
+      <h2>FAQ</h2>
+      <details open><summary>What can this tool remove?</summary><p>Leading/trailing spaces, repeated spaces, blank lines, tabs, or all whitespace characters.</p></details>
+      <details><summary>Will it change my line breaks?</summary><p>Trim and collapse modes keep line structure. Remove blank lines and strip-all modes change newlines as described on each button.</p></details>
+      <details><summary>Is text uploaded?</summary><p>No. Cleaning runs locally in your browser.</p></details>
+    </section>
+  </main>
+  <footer class="site-footer"><div class="inner"><div class="ad-slot" aria-hidden="true">Footer ad placeholder</div><p>© <span class="y"></span> MicroTools</p></div></footer>
+  <script>
+  document.querySelectorAll('.y').forEach(el => el.textContent = new Date().getFullYear());
+  const input = document.getElementById('input');
+  const toast = document.getElementById('toast');
+  document.getElementById('trim').onclick = () => {
+    input.value = input.value.split('\n').map(l => l.trimEnd()).join('\n').replace(/^\s+|\s+$/g, '');
+  };
+  document.getElementById('collapse').onclick = () => {
+    input.value = input.value.split('\n').map(l => l.replace(/[ \t]+/g, ' ').trim()).join('\n');
+  };
+  document.getElementById('blank').onclick = () => {
+    input.value = input.value.split(/\r?\n/).filter(l => l.trim() !== '').join('\n');
+  };
+  document.getElementById('tabs').onclick = () => {
+    input.value = input.value.replace(/\t/g, '  ');
+  };
+  document.getElementById('strip').onclick = () => {
+    input.value = input.value.replace(/\s+/g, '');
+  };
+  document.getElementById('copy').onclick = async () => {
+    await navigator.clipboard.writeText(input.value);
+    toast.textContent = 'Copied!'; setTimeout(() => toast.textContent = '', 1500);
+  };
+  </script>
+</body>
+</html>

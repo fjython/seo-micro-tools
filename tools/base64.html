@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Base64 Encode Decode — Free Online Base64 Tool</title>
+  <meta name="description" content="Free online Base64 encoder and decoder. Encode text to Base64 or decode Base64 back to UTF-8 text in your browser.">
+  <link rel="stylesheet" href="../assets/style.css">
+  <script type="application/ld+json">
+  {"@context":"https://schema.org","@type":"FAQPage","mainEntity":[
+    {"@type":"Question","name":"What is Base64 encoding?","acceptedAnswer":{"@type":"Answer","text":"Base64 encodes binary or text data into an ASCII string using 64 characters. It is commonly used in data URLs, email, and APIs."}},
+    {"@type":"Question","name":"Is encoding done on a server?","acceptedAnswer":{"@type":"Answer","text":"No. Encoding and decoding run locally with JavaScript in your browser."}},
+    {"@type":"Question","name":"Does it support Unicode?","acceptedAnswer":{"@type":"Answer","text":"Yes. Text is handled as UTF-8 before Base64 encoding and after decoding."}}
+  ]}
+  </script>
+</head>
+<body>
+  <header class="site-header"><div class="inner"><a class="logo" href="../index.html">Micro<span>Tools</span></a><a class="nav-home" href="../index.html">All tools</a></div></header>
+  <main>
+    <nav class="breadcrumb"><a href="../index.html">Home</a> / Base64 Encode / Decode</nav>
+    <h1>Base64 Encode / Decode</h1>
+    <p class="lead">Encode UTF-8 text to Base64 or decode Base64 back to text.</p>
+    <div class="ad-slot" aria-hidden="true">Advertisement placeholder</div>
+    <div class="panel">
+      <label for="input">Input</label>
+      <textarea id="input" placeholder="Text or Base64…"></textarea>
+      <div class="row">
+        <button type="button" class="btn" id="enc">Encode</button>
+        <button type="button" class="btn-secondary btn" id="dec">Decode</button>
+        <button type="button" class="btn-secondary btn" id="copy">Copy</button>
+        <button type="button" class="btn-secondary btn" id="clear">Clear</button>
+        <span class="toast" id="toast"></span>
+      </div>
+      <p id="err" style="color:#dc2626;font-size:.9rem;min-height:1.2em;margin:.5rem 0 0"></p>
+      <label>Output</label>
+      <div class="output-box" id="out">—</div>
+    </div>
+    <section class="faq">
+      <h2>FAQ</h2>
+      <details open><summary>What is Base64 encoding?</summary><p>Base64 encodes binary or text data into an ASCII string using 64 characters. It is commonly used in data URLs, email, and APIs.</p></details>
+      <details><summary>Is encoding done on a server?</summary><p>No. Encoding and decoding run locally with JavaScript in your browser.</p></details>
+      <details><summary>Does it support Unicode?</summary><p>Yes. Text is handled as UTF-8 before Base64 encoding and after decoding.</p></details>
+    </section>
+  </main>
+  <footer class="site-footer"><div class="inner"><div class="ad-slot" aria-hidden="true">Footer ad placeholder</div><p>© <span class="y"></span> MicroTools</p></div></footer>
+  <script>
+  document.querySelectorAll('.y').forEach(el => el.textContent = new Date().getFullYear());
+  const input = document.getElementById('input');
+  const out = document.getElementById('out');
+  const err = document.getElementById('err');
+  const toast = document.getElementById('toast');
+  function encodeUTF8(str) {
+    return btoa(unescape(encodeURIComponent(str)));
+  }
+  function decodeUTF8(b64) {
+    return decodeURIComponent(escape(atob(b64)));
+  }
+  document.getElementById('enc').onclick = () => {
+    try { err.textContent = ''; out.textContent = encodeUTF8(input.value); }
+    catch (e) { err.textContent = e.message; }
+  };
+  document.getElementById('dec').onclick = () => {
+    try { err.textContent = ''; out.textContent = decodeUTF8(input.value.trim()); }
+    catch (e) { err.textContent = 'Invalid Base64: ' + e.message; }
+  };
+  document.getElementById('copy').onclick = async () => {
+    await navigator.clipboard.writeText(out.textContent === '—' ? '' : out.textContent);
+    toast.textContent = 'Copied!'; setTimeout(() => toast.textContent = '', 1500);
+  };
+  document.getElementById('clear').onclick = () => { input.value = ''; out.textContent = '—'; err.textContent = ''; };
+  </script>
+</body>
+</html>

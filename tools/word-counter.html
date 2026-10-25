@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Word Counter — Free Online Word & Character Count Tool</title>
+  <meta name="description" content="Free online word counter. Count words, characters, sentences, and paragraphs instantly in your browser. No signup required.">
+  <link rel="stylesheet" href="../assets/style.css">
+  <script type="application/ld+json">
+  {"@context":"https://schema.org","@type":"FAQPage","mainEntity":[
+    {"@type":"Question","name":"How does the word counter work?","acceptedAnswer":{"@type":"Answer","text":"Type or paste text into the box. Words, characters, sentences, and paragraphs are counted instantly in your browser."}},
+    {"@type":"Question","name":"Is my text uploaded?","acceptedAnswer":{"@type":"Answer","text":"No. Counting runs entirely in your browser with JavaScript. Nothing is sent to a server."}},
+    {"@type":"Question","name":"Does it count characters with spaces?","acceptedAnswer":{"@type":"Answer","text":"Yes. You get both character counts with and without spaces."}}
+  ]}
+  </script>
+</head>
+<body>
+  <header class="site-header"><div class="inner"><a class="logo" href="../index.html">Micro<span>Tools</span></a><a class="nav-home" href="../index.html">All tools</a></div></header>
+  <main>
+    <nav class="breadcrumb"><a href="../index.html">Home</a> / Word Counter</nav>
+    <h1>Word Counter</h1>
+    <p class="lead">Count words, characters, sentences, and paragraphs as you type. Everything stays in your browser.</p>
+    <div class="ad-slot" aria-hidden="true">Advertisement placeholder</div>
+    <div class="panel">
+      <label for="input">Your text</label>
+      <textarea id="input" placeholder="Paste or type your text here…"></textarea>
+      <div class="stats" id="stats">
+        <span class="stat">Words: 0</span>
+        <span class="stat">Characters: 0</span>
+        <span class="stat">Chars (no spaces): 0</span>
+        <span class="stat">Sentences: 0</span>
+        <span class="stat">Paragraphs: 0</span>
+      </div>
+      <div class="row">
+        <button type="button" class="btn-secondary btn" id="clear">Clear</button>
+        <button type="button" class="btn-secondary btn" id="copy">Copy text</button>
+        <span class="toast" id="toast"></span>
+      </div>
+    </div>
+    <section class="faq">
+      <h2>FAQ</h2>
+      <details open><summary>How does the word counter work?</summary><p>Type or paste text into the box. Words, characters, sentences, and paragraphs are counted instantly in your browser.</p></details>
+      <details><summary>Is my text uploaded?</summary><p>No. Counting runs entirely in your browser with JavaScript. Nothing is sent to a server.</p></details>
+      <details><summary>Does it count characters with spaces?</summary><p>Yes. You get both character counts with and without spaces.</p></details>
+    </section>
+  </main>
+  <footer class="site-footer"><div class="inner"><div class="ad-slot" aria-hidden="true">Footer ad placeholder</div><p>© <span class="y"></span> MicroTools</p></div></footer>
+  <script>
+  document.querySelectorAll('.y').forEach(el => el.textContent = new Date().getFullYear());
+  const input = document.getElementById('input');
+  const stats = document.getElementById('stats');
+  const toast = document.getElementById('toast');
+  function count() {
+    const t = input.value;
+    const words = t.trim() ? t.trim().split(/\s+/).length : 0;
+    const chars = t.length;
+    const noSpace = t.replace(/\s/g, '').length;
+    const sentences = t.trim() ? (t.match(/[.!?]+(\s|$)/g) || []).length || (t.trim() ? 1 : 0) : 0;
+    const paragraphs = t.trim() ? t.split(/\n\s*\n/).filter(p => p.trim()).length : 0;
+    stats.innerHTML = `<span class="stat">Words: ${words}</span><span class="stat">Characters: ${chars}</span><span class="stat">Chars (no spaces): ${noSpace}</span><span class="stat">Sentences: ${sentences}</span><span class="stat">Paragraphs: ${paragraphs}</span>`;
+  }
+  input.addEventListener('input', count);
+  document.getElementById('clear').onclick = () => { input.value = ''; count(); toast.textContent = ''; };
+  document.getElementById('copy').onclick = async () => {
+    await navigator.clipboard.writeText(input.value);
+    toast.textContent = 'Copied!';
+    setTimeout(() => toast.textContent = '', 1500);
+  };
+  </script>
+</body>
+</html>

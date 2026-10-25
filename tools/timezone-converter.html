@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Timezone Converter — Convert Time Between World Timezones</title>
+  <meta name="description" content="Free online timezone converter. Convert a date and time between UTC, US, Europe, and Asia timezones in your browser.">
+  <link rel="stylesheet" href="../assets/style.css">
+  <script type="application/ld+json">
+  {"@context":"https://schema.org","@type":"FAQPage","mainEntity":[
+    {"@type":"Question","name":"How do I convert between timezones?","acceptedAnswer":{"@type":"Answer","text":"Pick a source timezone and datetime, choose a target timezone, and click Convert. Results use your browser's Intl API."}},
+    {"@type":"Question","name":"Does it account for daylight saving?","acceptedAnswer":{"@type":"Answer","text":"Yes. Named IANA timezones automatically apply DST rules for the selected date."}},
+    {"@type":"Question","name":"Is an internet connection required?","acceptedAnswer":{"@type":"Answer","text":"Only to load the page. Conversion runs offline in the browser."}}
+  ]}
+  </script>
+</head>
+<body>
+  <header class="site-header"><div class="inner"><a class="logo" href="../index.html">Micro<span>Tools</span></a><a class="nav-home" href="../index.html">All tools</a></div></header>
+  <main>
+    <nav class="breadcrumb"><a href="../index.html">Home</a> / Timezone Converter</nav>
+    <h1>Timezone Converter</h1>
+    <p class="lead">Convert a date and time from one timezone to another using IANA zone names.</p>
+    <div class="ad-slot" aria-hidden="true">Advertisement placeholder</div>
+    <div class="panel">
+      <div class="two-col">
+        <div>
+          <label for="fromTz">From timezone</label>
+          <select id="fromTz"></select>
+        </div>
+        <div>
+          <label for="toTz">To timezone</label>
+          <select id="toTz"></select>
+        </div>
+      </div>
+      <div style="margin-top:1rem">
+        <label for="dt">Date & time (in source zone)</label>
+        <input type="datetime-local" id="dt">
+      </div>
+      <div class="row">
+        <button type="button" class="btn" id="convert">Convert</button>
+        <button type="button" class="btn-secondary btn" id="now">Use now</button>
+      </div>
+      <label>Result</label>
+      <div class="output-box" id="out">—</div>
+    </div>
+    <section class="faq">
+      <h2>FAQ</h2>
+      <details open><summary>How do I convert between timezones?</summary><p>Pick a source timezone and datetime, choose a target timezone, and click Convert. Results use your browser's Intl API.</p></details>
+      <details><summary>Does it account for daylight saving?</summary><p>Yes. Named IANA timezones automatically apply DST rules for the selected date.</p></details>
+      <details><summary>Is an internet connection required?</summary><p>Only to load the page. Conversion runs offline in the browser.</p></details>
+    </section>
+  </main>
+  <footer class="site-footer"><div class="inner"><div class="ad-slot" aria-hidden="true">Footer ad placeholder</div><p>© <span class="y"></span> MicroTools</p></div></footer>
+  <script>
+  document.querySelectorAll('.y').forEach(el => el.textContent = new Date().getFullYear());
+  const zones = [
+    'UTC','America/New_York','America/Chicago','America/Denver','America/Los_Angeles',
+    'America/Sao_Paulo','Europe/London','Europe/Paris','Europe/Berlin','Europe/Moscow',
+    'Asia/Dubai','Asia/Kolkata','Asia/Shanghai','Asia/Tokyo','Asia/Singapore',
+    'Australia/Sydney','Pacific/Auckland'
+  ];
+  const fromTz = document.getElementById('fromTz');
+  const toTz = document.getElementById('toTz');
+  zones.forEach(z => {
+    fromTz.add(new Option(z, z));
+    toTz.add(new Option(z, z));
+  });
+  fromTz.value = Intl.DateTimeFormat().resolvedOptions().timeZone in Object.fromEntries(zones.map(z=>[z,1]))
+    ? Intl.DateTimeFormat().resolvedOptions().timeZone : 'UTC';
+  if (![...fromTz.options].some(o => o.value === fromTz.value)) fromTz.value = 'UTC';
+  toTz.value = 'UTC';
+  const dt = document.getElementById('dt');
+  const out = document.getElementById('out');
+  function pad(n){ return String(n).padStart(2,'0'); }
+  function setNow() {
+    const n = new Date();
+    dt.value = `${n.getFullYear()}-${pad(n.getMonth()+1)}-${pad(n.getDate())}T${pad(n.getHours())}:${pad(n.getMinutes())}`;
+  }
+  setNow();
+  function partsInZone(date, tz) {
+    const f = new Intl.DateTimeFormat('en-US', {
+      timeZone: tz, year:'numeric', month:'2-digit', day:'2-digit',
+      hour:'2-digit', minute:'2-digit', second:'2-digit', hour12:false
+    });
+    const p = Object.fromEntries(f.formatToParts(date).filter(x => x.type !== 'literal').map(x => [x.type, x.value]));
+    return p;
+  }
+  function localInZoneToUtcMs(localStr, tz) {
+    // Interpret datetime-local as wall time in tz, return UTC ms
+    const [datePart, timePart] = localStr.split('T');
+    const [Y,M,D] = datePart.split('-').map(Number);
+    const [h,m] = timePart.split(':').map(Number);
+    // Guess: treat as UTC then adjust by offset in that zone
+    let guess = Date.UTC(Y, M-1, D, h, m, 0);
+    for (let i = 0; i < 3; i++) {
+      const p = partsInZone(new Date(guess), tz);
+      const asUtc = Date.UTC(+p.year, +p.month-1, +p.day, +p.hour % 24, +p.minute, +p.second);
+      const target = Date.UTC(Y, M-1, D, h, m, 0);
+      guess += (target - asUtc);
+    }
+    return guess;
+  }
+  document.getElementById('now').onclick = setNow;
+  document.getElementById('convert').onclick = () => {
+    if (!dt.value) { out.textContent = 'Pick a date and time.'; return; }
+    try {
+      const ms = localInZoneToUtcMs(dt.value, fromTz.value);
+      const d = new Date(ms);
+      const formatted = new Intl.DateTimeFormat('en-US', {
+        timeZone: toTz.value, weekday:'short', year:'numeric', month:'short', day:'numeric',
+        hour:'2-digit', minute:'2-digit', second:'2-digit', hour12:false, timeZoneName:'short'
+      }).format(d);
+      out.textContent = formatted + '\nIANA: ' + toTz.value + '\nUTC ISO: ' + d.toISOString();
+    } catch (e) {
+      out.textContent = 'Error: ' + e.message;
+    }
+  };
+  </script>
+</body>
+</html>

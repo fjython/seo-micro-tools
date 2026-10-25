@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>JSON Formatter & Validator — Free Online Pretty Print Tool</title>
+  <meta name="description" content="Free online JSON formatter and validator. Pretty-print, minify, and check JSON syntax in your browser. No upload required.">
+  <link rel="stylesheet" href="../assets/style.css">
+  <script type="application/ld+json">
+  {"@context":"https://schema.org","@type":"FAQPage","mainEntity":[
+    {"@type":"Question","name":"How do I format JSON online?","acceptedAnswer":{"@type":"Answer","text":"Paste your JSON, click Format, and get indented pretty-printed output. Use Minify for a compact single line."}},
+    {"@type":"Question","name":"Is my JSON data private?","acceptedAnswer":{"@type":"Answer","text":"Yes. Formatting and validation run locally in your browser. Nothing is uploaded."}},
+    {"@type":"Question","name":"What happens if JSON is invalid?","acceptedAnswer":{"@type":"Answer","text":"The tool shows a clear error message with the parser reason so you can fix the syntax."}}
+  ]}
+  </script>
+</head>
+<body>
+  <header class="site-header"><div class="inner"><a class="logo" href="../index.html">Micro<span>Tools</span></a><a class="nav-home" href="../index.html">All tools</a></div></header>
+  <main>
+    <nav class="breadcrumb"><a href="../index.html">Home</a> / JSON Formatter</nav>
+    <h1>JSON Formatter & Validator</h1>
+    <p class="lead">Pretty-print, minify, and validate JSON entirely in your browser.</p>
+    <div class="ad-slot" aria-hidden="true">Advertisement placeholder</div>
+    <div class="panel">
+      <label for="input">JSON input</label>
+      <textarea id="input" placeholder='{"hello":"world"}'></textarea>
+      <div class="row">
+        <button type="button" class="btn" id="format">Format</button>
+        <button type="button" class="btn-secondary btn" id="minify">Minify</button>
+        <button type="button" class="btn-secondary btn" id="copy">Copy</button>
+        <button type="button" class="btn-secondary btn" id="clear">Clear</button>
+        <span class="toast" id="toast"></span>
+      </div>
+      <p id="err" style="color:#dc2626;font-size:.9rem;min-height:1.2em;margin:.5rem 0 0"></p>
+    </div>
+    <section class="faq">
+      <h2>FAQ</h2>
+      <details open><summary>How do I format JSON online?</summary><p>Paste your JSON, click Format, and get indented pretty-printed output. Use Minify for a compact single line.</p></details>
+      <details><summary>Is my JSON data private?</summary><p>Yes. Formatting and validation run locally in your browser. Nothing is uploaded.</p></details>
+      <details><summary>What happens if JSON is invalid?</summary><p>The tool shows a clear error message with the parser reason so you can fix the syntax.</p></details>
+    </section>
+  </main>
+  <footer class="site-footer"><div class="inner"><div class="ad-slot" aria-hidden="true">Footer ad placeholder</div><p>© <span class="y"></span> MicroTools</p></div></footer>
+  <script>
+  document.querySelectorAll('.y').forEach(el => el.textContent = new Date().getFullYear());
+  const input = document.getElementById('input');
+  const err = document.getElementById('err');
+  const toast = document.getElementById('toast');
+  function parse() {
+    try { err.textContent = ''; return JSON.parse(input.value); }
+    catch (e) { err.textContent = 'Invalid JSON: ' + e.message; return null; }
+  }
+  document.getElementById('format').onclick = () => { const o = parse(); if (o !== null) input.value = JSON.stringify(o, null, 2); };
+  document.getElementById('minify').onclick = () => { const o = parse(); if (o !== null) input.value = JSON.stringify(o); };
+  document.getElementById('copy').onclick = async () => { await navigator.clipboard.writeText(input.value); toast.textContent = 'Copied!'; setTimeout(() => toast.textContent = '', 1500); };
+  document.getElementById('clear').onclick = () => { input.value = ''; err.textContent = ''; toast.textContent = ''; };
+  </script>
+</body>
+</html>

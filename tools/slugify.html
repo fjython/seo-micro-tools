@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Slugify Text — Free URL Slug Generator Online</title>
+  <meta name="description" content="Free online slugify tool. Turn titles into clean URL-friendly slugs with hyphens, lowercase, and optional max length.">
+  <link rel="stylesheet" href="../assets/style.css">
+  <script type="application/ld+json">
+  {"@context":"https://schema.org","@type":"FAQPage","mainEntity":[
+    {"@type":"Question","name":"What is a URL slug?","acceptedAnswer":{"@type":"Answer","text":"A slug is the readable part of a URL path, usually lowercase words separated by hyphens, like my-blog-post."}},
+    {"@type":"Question","name":"How are accents handled?","acceptedAnswer":{"@type":"Answer","text":"Accented characters are normalized to ASCII equivalents when possible (é → e), then non-alphanumeric characters are removed."}},
+    {"@type":"Question","name":"Is text uploaded?","acceptedAnswer":{"@type":"Answer","text":"No. Slug generation runs entirely in your browser."}}
+  ]}
+  </script>
+</head>
+<body>
+  <header class="site-header"><div class="inner"><a class="logo" href="../index.html">Micro<span>Tools</span></a><a class="nav-home" href="../index.html">All tools</a></div></header>
+  <main>
+    <nav class="breadcrumb"><a href="../index.html">Home</a> / Slugify Text</nav>
+    <h1>Slugify Text</h1>
+    <p class="lead">Turn any title into a clean, URL-friendly slug.</p>
+    <div class="ad-slot" aria-hidden="true">Advertisement placeholder</div>
+    <div class="panel">
+      <label for="input">Title or text</label>
+      <textarea id="input" placeholder="My Awesome Blog Post!" rows="3"></textarea>
+      <div class="row">
+        <label style="display:inline;font-weight:500;margin:0">Max length <input type="number" id="max" min="0" max="200" value="0" style="width:80px;display:inline-block" title="0 = no limit"></label>
+        <button type="button" class="btn" id="go">Slugify</button>
+        <button type="button" class="btn-secondary btn" id="copy">Copy</button>
+        <span class="toast" id="toast"></span>
+      </div>
+      <label>Slug</label>
+      <div class="output-box" id="out">—</div>
+    </div>
+    <section class="faq">
+      <h2>FAQ</h2>
+      <details open><summary>What is a URL slug?</summary><p>A slug is the readable part of a URL path, usually lowercase words separated by hyphens, like my-blog-post.</p></details>
+      <details><summary>How are accents handled?</summary><p>Accented characters are normalized to ASCII equivalents when possible (é → e), then non-alphanumeric characters are removed.</p></details>
+      <details><summary>Is text uploaded?</summary><p>No. Slug generation runs entirely in your browser.</p></details>
+    </section>
+  </main>
+  <footer class="site-footer"><div class="inner"><div class="ad-slot" aria-hidden="true">Footer ad placeholder</div><p>© <span class="y"></span> MicroTools</p></div></footer>
+  <script>
+  document.querySelectorAll('.y').forEach(el => el.textContent = new Date().getFullYear());
+  const input = document.getElementById('input');
+  const out = document.getElementById('out');
+  const toast = document.getElementById('toast');
+  function slugify(str) {
+    let s = str.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+    s = s.toLowerCase().trim()
+      .replace(/[^a-z0-9\s-]/g, '')
+      .replace(/[\s_-]+/g, '-')
+      .replace(/^-+|-+$/g, '');
+    const max = parseInt(document.getElementById('max').value, 10) || 0;
+    if (max > 0 && s.length > max) {
+      s = s.slice(0, max).replace(/-+$/g, '');
+    }
+    return s;
+  }
+  function run() { out.textContent = slugify(input.value) || '—'; }
+  input.addEventListener('input', run);
+  document.getElementById('go').onclick = run;
+  document.getElementById('max').addEventListener('input', run);
+  document.getElementById('copy').onclick = async () => {
+    const t = out.textContent === '—' ? '' : out.textContent;
+    await navigator.clipboard.writeText(t);
+    toast.textContent = 'Copied!'; setTimeout(() => toast.textContent = '', 1500);
+  };
+  </script>
+</body>
+</html>

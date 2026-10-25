@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>UUID Generator — Free Online UUID v4 Generator</title>
+  <meta name="description" content="Free online UUID v4 generator. Create one or many random UUIDs in your browser with crypto.getRandomValues.">
+  <link rel="stylesheet" href="../assets/style.css">
+  <script type="application/ld+json">
+  {"@context":"https://schema.org","@type":"FAQPage","mainEntity":[
+    {"@type":"Question","name":"What UUID version is generated?","acceptedAnswer":{"@type":"Answer","text":"UUID version 4 (random), using the Web Crypto API when available."}},
+    {"@type":"Question","name":"Are UUIDs unique?","acceptedAnswer":{"@type":"Answer","text":"UUID v4 has an extremely low collision probability for practical use. They are suitable for IDs, keys, and tokens."}},
+    {"@type":"Question","name":"Is generation done on a server?","acceptedAnswer":{"@type":"Answer","text":"No. UUIDs are generated locally in your browser."}}
+  ]}
+  </script>
+</head>
+<body>
+  <header class="site-header"><div class="inner"><a class="logo" href="../index.html">Micro<span>Tools</span></a><a class="nav-home" href="../index.html">All tools</a></div></header>
+  <main>
+    <nav class="breadcrumb"><a href="../index.html">Home</a> / UUID Generator</nav>
+    <h1>UUID Generator</h1>
+    <p class="lead">Generate cryptographically random UUID v4 identifiers in bulk.</p>
+    <div class="ad-slot" aria-hidden="true">Advertisement placeholder</div>
+    <div class="panel">
+      <label for="count">How many UUIDs?</label>
+      <input type="number" id="count" min="1" max="500" value="5" style="max-width:120px">
+      <div class="row">
+        <button type="button" class="btn" id="gen">Generate</button>
+        <button type="button" class="btn-secondary btn" id="copy">Copy all</button>
+        <span class="toast" id="toast"></span>
+      </div>
+      <label>Output</label>
+      <div class="output-box" id="out" style="min-height:8rem"></div>
+    </div>
+    <section class="faq">
+      <h2>FAQ</h2>
+      <details open><summary>What UUID version is generated?</summary><p>UUID version 4 (random), using the Web Crypto API when available.</p></details>
+      <details><summary>Are UUIDs unique?</summary><p>UUID v4 has an extremely low collision probability for practical use. They are suitable for IDs, keys, and tokens.</p></details>
+      <details><summary>Is generation done on a server?</summary><p>No. UUIDs are generated locally in your browser.</p></details>
+    </section>
+  </main>
+  <footer class="site-footer"><div class="inner"><div class="ad-slot" aria-hidden="true">Footer ad placeholder</div><p>© <span class="y"></span> MicroTools</p></div></footer>
+  <script>
+  document.querySelectorAll('.y').forEach(el => el.textContent = new Date().getFullYear());
+  const out = document.getElementById('out');
+  const toast = document.getElementById('toast');
+  function uuid() {
+    if (crypto.randomUUID) return crypto.randomUUID();
+    const b = new Uint8Array(16);
+    crypto.getRandomValues(b);
+    b[6] = (b[6] & 0x0f) | 0x40;
+    b[8] = (b[8] & 0x3f) | 0x80;
+    const h = [...b].map(x => x.toString(16).padStart(2,'0')).join('');
+    return `${h.slice(0,8)}-${h.slice(8,12)}-${h.slice(12,16)}-${h.slice(16,20)}-${h.slice(20)}`;
+  }
+  function generate() {
+    let n = parseInt(document.getElementById('count').value, 10) || 1;
+    n = Math.min(500, Math.max(1, n));
+    const list = Array.from({length: n}, uuid);
+    out.textContent = list.join('\n');
+  }
+  document.getElementById('gen').onclick = generate;
+  document.getElementById('copy').onclick = async () => {
+    await navigator.clipboard.writeText(out.textContent);
+    toast.textContent = 'Copied!';
+    setTimeout(() => toast.textContent = '', 1500);
+  };
+  generate();
+  </script>
+</body>
+</html>

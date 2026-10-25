@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url><loc>/index.html</loc></url>
+  <url><loc>/tools/word-counter.html</loc></url>
+  <url><loc>/tools/json-formatter.html</loc></url>
+  <url><loc>/tools/case-converter.html</loc></url>
+  <url><loc>/tools/timezone-converter.html</loc></url>
+  <url><loc>/tools/uuid-generator.html</loc></url>
+  <url><loc>/tools/lorem-ipsum.html</loc></url>
+  <url><loc>/tools/base64.html</loc></url>
+  <url><loc>/tools/timestamp-converter.html</loc></url>
+  <url><loc>/tools/slugify.html</loc></url>
+  <url><loc>/tools/whitespace-remover.html</loc></url>
+</urlset>
